@@ -3,9 +3,43 @@
         <title>
             Mathlete
         </title>
-            
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
     </head>
     <body>
-
+        <p>Supported image formats: JPEG, PNG, GIF, BMP. <br>
+            Image file size must be less than 4MB. <br>
+            Image dimensions must be between 40 x 40 and 3200 x 3200 pixels.
+        </p>
+        <form>
+        <input type="file" id="image">
+        <button type="submit" id="sendButton">Submit</button>
+        </form>
+        <script type="text/javascript">
+            $"sendButton".click(function() {
+                var params = {
+                    // Request parameters
+                    "language": "unk",
+                    "detectOrientation ": "true",
+                };
+              
+                $.ajax({
+                    url: "https://westus.api.cognitive.microsoft.com/vision/v2.0/ocr?" + $.param(params),
+                    beforeSend: function(xhrObj){
+                        // Request headers
+                        xhrObj.setRequestHeader("Content-Type","application/json");
+                        xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key","7412785e83c94921a32316502e9c3d92");
+                    },
+                    type: "POST",
+                    // Request body
+                    data: "image",
+                })
+                .done(function(data) {
+                    alert("success");
+                })
+                .fail(function() {
+                    alert("error");
+                });
+            });
+        </script>
     </body>
 </html>
